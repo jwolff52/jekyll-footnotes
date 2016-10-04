@@ -57,6 +57,14 @@ module Jekyll
   end
 
   class FootnoteList < Liquid::Block
+    include FootnoteUtils
+    
+    def initialize(tag_name, id, tokens)
+      raise(SyntaxError.new("invalid footnote ID")) if ['"', '<', '>'].any? { |c| id.include?(c) }
+      @id = id.strip unless id.strip.empty?
+      super
+    end
+    
     def render(context)
       context.stack do
         body = super
