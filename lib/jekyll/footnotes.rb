@@ -66,6 +66,11 @@ module Jekyll
     end
     
     def render(context)
+      if @id.nil?
+        context.registers[:footnotes] ||= 0
+        context.registers[:footnotes] = context.registers[:footnotes].next
+        @id = context.registers[:footnotes]
+      end
       context.stack do
         body = super
         site = context.registers[:site]
